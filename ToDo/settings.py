@@ -15,12 +15,17 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
+
+SECRET_KEY = env('SECRET_KEY')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-fl5w$-074pcx0wwzdj=qdm^y=ywxj(*(m@n9l!^wes(&%bfvb_'
+# SECRET_KEY = 'django-insecure-fl5w$-074pcx0wwzdj=qdm^y=ywxj(*(m@n9l!^wes(&%bfvb_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -139,10 +144,9 @@ FCM_DJANGO_SETTINGS = {
     "FCM_SERVER_KEY": "BCEs3C_q2MhyTinOXmocdlouz6upUoeyzp1Mol6HuYCRhcZWlNEDZLVMZfPa1trXoqdhbvbmwlkqB9LlsokshHo"
 }
 
-# import environ
 
-# env = environ.Env()
-# environ.Env.read_env()
+import firebase_admin
+from firebase_admin import credentials
 
-# SECRET_KEY = env('SECRET_KEY')
-
+cred = credentials.Certificate("C:\Users\Lenovo\ToDo\todo-1bdea-firebase-adminsdk-fft1b-6acfeb40f1.json")
+firebase_admin.initialize_app(cred)

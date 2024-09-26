@@ -1,13 +1,28 @@
-import logging
+from .models import activitylog
 
-logger = logging.getLogger(__name__)
+from django.utils.timezone import now
 
-class TaskLoggingMiddleware:
+class ActivityLoggingMiddleware:
+   
     def __init__(self, get_response):
+       
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.path.startswith('/tasks/'):
-            logger.info(f"{request.method} request by {request.user} to {request.path}")
+        """
+        Code to be executed for each request before the view (and later middleware) is called.
+        """
         response = self.get_response(request)
+
+        user = request.user if request.user.is_authenticated else None  
+        method = request.method
+        path = request.path
+
+        activitylog.objects.create(
+            user=user,
+            method=method,
+            path=path,
+            timestamp=now()
+        )
+
         return response

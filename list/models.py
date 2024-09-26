@@ -19,3 +19,8 @@ class TaskMember(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.task.title}"
 
+class activitylog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    method = models.CharField(max_length=10)
+    path = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
